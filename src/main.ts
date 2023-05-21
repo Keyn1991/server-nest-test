@@ -6,7 +6,7 @@ import { PrismaService } from './core/orm/prisma.service';
 import * as process from 'process';
 
 async function bootstrap() {
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 5000;
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
@@ -18,10 +18,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
   app.enableCors({
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:3000',
   });
-  await app.listen(3000);
+  await app.listen(PORT);
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
+
+  console.log(`Server is running on port ${PORT}`);
 }
 bootstrap();

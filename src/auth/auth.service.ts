@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../core/orm/prisma.service';
 import { AuthDto } from './dto/auth.dto';
-import { faker, ne } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { hash, verify } from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';

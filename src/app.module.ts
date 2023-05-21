@@ -12,6 +12,7 @@ import { UserService } from './users/users.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { RolesModule } from './roles/roles.module';
+import { PrismaModule } from './core/orm/prisma.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { RolesModule } from './roles/roles.module';
     AuthModule,
     ConfigModule,
     RolesModule,
+    PrismaModule,
   ],
   controllers: [AppController, AdvertisementsController, UserController],
   providers: [AppService, PrismaService, AdvertisementsService, UserService],
