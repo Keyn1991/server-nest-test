@@ -9,7 +9,6 @@ import {
   UsePipes,
   ValidationPipe,
   HttpCode,
-  Patch,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { User } from './dto/user.dto';

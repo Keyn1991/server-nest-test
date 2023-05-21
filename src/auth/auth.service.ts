@@ -4,10 +4,10 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { PrismaService } from '../core/orm/prisma.service';
 import { AuthDto } from './dto/auth.dto';
 import { faker } from '@faker-js/faker';
-import { hash, verify } from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 
@@ -23,6 +23,7 @@ export class AuthService {
       ...token,
     };
   }
+
   async getNewTokens(refreshToken: string) {
     const result = await this.jwt.verifyAsync(refreshToken);
     if (!result) throw new UnauthorizedException('Invalid refresh token');
@@ -38,6 +39,7 @@ export class AuthService {
       ...tokens,
     };
   }
+
   async register(dto: AuthDto) {
     const oldUser = await this.prisma.user.findUnique({
       where: {
@@ -50,7 +52,7 @@ export class AuthService {
       data: {
         email: dto.email,
         username: faker.name.firstName(),
-        password: await hash(dto.password),
+        password: dto.password,
       },
     });
     const tokens = await this.issueTokens(user.id);
@@ -59,6 +61,7 @@ export class AuthService {
       ...tokens,
     };
   }
+
   private async issueTokens(userId: number) {
     const data = { id: userId };
 
@@ -70,12 +73,14 @@ export class AuthService {
     });
     return { accessToken, refreshToken };
   }
+
   private returnUserFields(user: User) {
     return {
       id: user.id,
       email: user.email,
     };
   }
+
   private async validateUser(dto: AuthDto) {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -84,9 +89,9 @@ export class AuthService {
     });
     if (!user) throw new NotFoundException('User not found');
 
-    const isValid = await verify(user.password, dto.password);
-
-    if (!isValid) throw new UnauthorizedException('Invalid credentials');
+    if (user.password !== dto.password) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
 
     return user;
   }

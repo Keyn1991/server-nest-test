@@ -26,5 +26,6 @@ import { PrismaModule } from './core/orm/prisma.module';
   ],
   controllers: [AppController, AdvertisementsController, UserController],
   providers: [AppService, PrismaService, AdvertisementsService, UserService],
+  exports: [PrismaService],
 })
 export class AppModule {}
