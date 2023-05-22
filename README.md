@@ -27,6 +27,9 @@
 
 тестове завданя Okten 
 
+посилання на AWS
+http://myapp2023.us-east-1.elasticbeanstalk.com/
+
 Документація до REST API
 
 http://localhost:5000/api/docs
